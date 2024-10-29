@@ -15,10 +15,8 @@
   <div id="map"></div>
 
   <script>
-    // Set up your Mapbox access token
     mapboxgl.accessToken = 'pk.eyJ1IjoieWlnaXRlZmVuYXMxIiwiYSI6ImNsemgwaXRmMjFqZGkybHBrZWtnMjJrbWMifQ.1pb_ksI0o0IaKeEKeBG49g';
 
-    // Initialize the Mapbox map with globe projection
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
@@ -27,26 +25,26 @@
       projection: 'globe'
     });
 
-    // Country data with GeoJSON and links
+    // Updated country data with precise Mapbox names and links
     const countryData = {
       "Turkey": {
         "name": "Turkey",
         "media": "https://drive.google.com/file/d/1Q6OrKY-gOjeXyuBZxBk1TY0tGTTn8rOE/view?usp=drive_link"
       },
       "South Korea": {
-        "name": "South Korea",
+        "name": "Republic of Korea",  // Exact name in the Mapbox dataset
         "media": "https://drive.google.com/file/d/1Q6OrKY-gOjeXyuBZxBk1TY0tGTTn8rOE/view?usp=drive_link"
       },
       "Kazakhstan": {
         "name": "Kazakhstan",
         "media": "https://drive.google.com/file/d/10t55LpuqM4N02CzyOc6KG8uRFCDQLVUG/view?usp=drive_link"
       },
-      "UK": {
-        "name": "United Kingdom",
+      "United Kingdom": {
+        "name": "United Kingdom of Great Britain and Northern Ireland",  // Exact name in Mapbox
         "media": "https://drive.google.com/file/d/1fA8uX8NzTPTLVZAaNURlY05KUQUs2DGb/view?usp=drive_link"
       },
       "Taiwan": {
-        "name": "Taiwan",
+        "name": "Taiwan",  // Also appears as "Taiwan" in the Mapbox dataset
         "media": "https://drive.google.com/file/d/1v4dUfSkyMh1Lk31Fj_pUnnQfOcDujkAG/view?usp=drive_link"
       },
       "USA": {
@@ -59,17 +57,16 @@
       }
     };
 
-    // Load map and add highlight layer
     map.on('load', () => {
       map.setFog({}); // Adds atmosphere around the globe
 
-      // Add a source for the country highlights
+      // Add the source for country boundaries
       map.addSource('countries', {
         type: 'vector',
         url: 'mapbox://mapbox.country-boundaries-v1'
       });
 
-      // Add a layer to display the countries in red
+      // Add a layer to color the selected countries in red
       map.addLayer({
         'id': 'country-highlight',
         'type': 'fill',
@@ -88,7 +85,7 @@
         const country = Object.values(countryData).find(c => c.name === countryName);
 
         if (country) {
-          window.open(country.media, '_blank'); // Open media link in a new tab
+          window.open(country.media, '_blank'); // Open link in a new tab
         }
       });
 
