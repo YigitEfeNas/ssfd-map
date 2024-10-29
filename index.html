@@ -9,24 +9,16 @@
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
-    .custom-marker {
-      background-color: #ff5a5f;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
   </style>
 </head>
 <body>
   <div id="map"></div>
 
   <script>
+    // Set up your Mapbox access token
     mapboxgl.accessToken = 'pk.eyJ1IjoieWlnaXRlZmVuYXMxIiwiYSI6ImNsemgwaXRmMjFqZGkybHBrZWtnMjJrbWMifQ.1pb_ksI0o0IaKeEKeBG49g';
 
+    // Initialize the Mapbox map with globe projection
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
@@ -35,54 +27,79 @@
       projection: 'globe'
     });
 
+    // Country data with GeoJSON and links
     const countryData = {
       "Turkey": {
-        "coordinates": [35, 39],
+        "name": "Turkey",
         "media": "https://drive.google.com/file/d/1Q6OrKY-gOjeXyuBZxBk1TY0tGTTn8rOE/view?usp=drive_link"
       },
       "South Korea": {
-        "coordinates": [127.7669, 35.9078],
+        "name": "South Korea",
         "media": "https://drive.google.com/file/d/1Q6OrKY-gOjeXyuBZxBk1TY0tGTTn8rOE/view?usp=drive_link"
       },
       "Kazakhstan": {
-        "coordinates": [66.9237, 48.0196],
+        "name": "Kazakhstan",
         "media": "https://drive.google.com/file/d/10t55LpuqM4N02CzyOc6KG8uRFCDQLVUG/view?usp=drive_link"
       },
       "UK": {
-        "coordinates": [-3.4360, 55.3781],
+        "name": "United Kingdom",
         "media": "https://drive.google.com/file/d/1fA8uX8NzTPTLVZAaNURlY05KUQUs2DGb/view?usp=drive_link"
       },
       "Taiwan": {
-        "coordinates": [121.5654, 25.0330],
+        "name": "Taiwan",
         "media": "https://drive.google.com/file/d/1v4dUfSkyMh1Lk31Fj_pUnnQfOcDujkAG/view?usp=drive_link"
       },
       "USA": {
-        "coordinates": [-98.5795, 39.8283],
+        "name": "United States of America",
         "media": "https://drive.google.com/file/d/1MbOfM_zyDQ3tc6RcrPh8SrXb1RvUjY_B/view?usp=drive_link"
       },
       "Poland": {
-        "coordinates": [19.1451, 51.9194],
+        "name": "Poland",
         "media": "https://drive.google.com/file/d/1VryqnQ9rCd2tlXh3rKn5wqLVVvsNcrEf/view?usp=drive_link"
       }
     };
 
-    for (const country in countryData) {
-      const data = countryData[country];
+    // Load map and add highlight layer
+    map.on('load', () => {
+      map.setFog({}); // Adds atmosphere around the globe
 
-      const el = document.createElement('div');
-      el.className = 'custom-marker';
-
-      const marker = new mapboxgl.Marker(el)
-        .setLngLat(data.coordinates)
-        .addTo(map);
-
-      el.addEventListener('click', () => {
-        window.location.href = data.media;
+      // Add a source for the country highlights
+      map.addSource('countries', {
+        type: 'vector',
+        url: 'mapbox://mapbox.country-boundaries-v1'
       });
-    }
 
-    map.on('style.load', () => {
-      map.setFog({});
+      // Add a layer to display the countries in red
+      map.addLayer({
+        'id': 'country-highlight',
+        'type': 'fill',
+        'source': 'countries',
+        'source-layer': 'country_boundaries',
+        'paint': {
+          'fill-color': '#ff5a5f',
+          'fill-opacity': 0.6
+        },
+        'filter': ['in', 'name', ...Object.values(countryData).map(country => country.name)]
+      });
+
+      // Event listener for country clicks
+      map.on('click', 'country-highlight', (e) => {
+        const countryName = e.features[0].properties.name;
+        const country = Object.values(countryData).find(c => c.name === countryName);
+
+        if (country) {
+          window.open(country.media, '_blank'); // Open media link in a new tab
+        }
+      });
+
+      // Change cursor to pointer when hovering over a country
+      map.on('mouseenter', 'country-highlight', () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+
+      map.on('mouseleave', 'country-highlight', () => {
+        map.getCanvas().style.cursor = '';
+      });
     });
   </script>
 </body>
