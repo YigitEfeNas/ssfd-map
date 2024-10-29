@@ -9,6 +9,17 @@
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    /* Custom style for markers */
+    .custom-marker {
+      background-color: #ff5a5f;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
@@ -42,13 +53,17 @@
     for (const country in countryData) {
       const data = countryData[country];
 
-      // Add a marker
-      const marker = new mapboxgl.Marker()
+      // Create a custom marker element
+      const el = document.createElement('div');
+      el.className = 'custom-marker';
+
+      // Add a marker with the custom element
+      const marker = new mapboxgl.Marker(el)
         .setLngLat(data.coordinates)
         .addTo(map);
 
       // Handle click event to play media
-      marker.getElement().addEventListener('click', () => {
+      el.addEventListener('click', () => {
         const mediaUrl = data.media;
         const mediaType = mediaUrl.endsWith(".mp4") ? "video" : "audio";
 
@@ -57,7 +72,13 @@
           video.src = mediaUrl;
           video.controls = true;
           video.autoplay = true;
+          video.style.position = "fixed";
+          video.style.bottom = "20px";
+          video.style.right = "20px";
+          video.style.width = "300px";
           document.body.appendChild(video);
+
+          // Remove video when it ends
           video.addEventListener("ended", () => video.remove());
         } else {
           const audio = new Audio(mediaUrl);
