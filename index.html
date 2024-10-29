@@ -32,7 +32,7 @@
         "media": "https://drive.google.com/file/d/1Q6OrKY-gOjeXyuBZxBk1TY0tGTTn8rOE/view?usp=drive_link"
       },
       "South Korea": {
-        "name": "Republic of Korea",  // Exact name in the Mapbox dataset
+        "name": "South Korea",
         "media": "https://drive.google.com/file/d/1Q6OrKY-gOjeXyuBZxBk1TY0tGTTn8rOE/view?usp=drive_link"
       },
       "Kazakhstan": {
@@ -40,15 +40,15 @@
         "media": "https://drive.google.com/file/d/10t55LpuqM4N02CzyOc6KG8uRFCDQLVUG/view?usp=drive_link"
       },
       "UK": {
-        "name": "United Kingdom",  // Exact name in Mapbox dataset
+        "name": "United Kingdom",
         "media": "https://drive.google.com/file/d/1fA8uX8NzTPTLVZAaNURlY05KUQUs2DGb/view?usp=drive_link"
       },
       "Taiwan": {
-        "name": "Taiwan",  // Also appears as "Taiwan" in the Mapbox dataset
+        "name": "Taiwan",
         "media": "https://drive.google.com/file/d/1v4dUfSkyMh1Lk31Fj_pUnnQfOcDujkAG/view?usp=drive_link"
       },
       "USA": {
-        "name": "United States", // Use 'United States' for proper matching
+        "name": "United States",
         "media": "https://drive.google.com/file/d/1MbOfM_zyDQ3tc6RcrPh8SrXb1RvUjY_B/view?usp=drive_link"
       },
       "Poland": {
@@ -76,7 +76,7 @@
           'fill-color': '#ff5a5f',
           'fill-opacity': 0.6
         },
-        'filter': ['in', 'name', ...Object.values(countryData).map(country => country.name)]
+        'filter': ['in', 'name_en', ...Object.values(countryData).map(country => country.name)]
       });
 
       // Event listener for country clicks
