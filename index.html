@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapbox Interactive Map</title>
+  <title>Mapbox Interactive Globe</title>
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
   <style>
@@ -31,17 +31,38 @@
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [34.8516, 38.9637],
-      zoom: 2
+      zoom: 2,
+      projection: 'globe'
     });
 
     const countryData = {
       "Turkey": {
         "coordinates": [35, 39],
-        "media": "https://drive.google.com/uc?export=download&id=1Q6OrKY-gOjeXyuBZxBk1TY0tGTTn8rOE"
+        "media": "https://drive.google.com/file/d/1Q6OrKY-gOjeXyuBZxBk1TY0tGTTn8rOE/view?usp=drive_link"
       },
       "South Korea": {
         "coordinates": [127.7669, 35.9078],
-        "media": "https://drive.google.com/uc?export=download&id=1GjmRSJumehYvkDi_lnA8HFPx9JaA10Ok"
+        "media": "https://drive.google.com/file/d/1Q6OrKY-gOjeXyuBZxBk1TY0tGTTn8rOE/view?usp=drive_link"
+      }
+      "Kazakhstan": {
+        "coordinates": [66.9237, 48.0196],
+        "media": "https://drive.google.com/file/d/10t55LpuqM4N02CzyOc6KG8uRFCDQLVUG/view?usp=drive_link"
+      }
+      "UK": {
+        "coordinates": [-3.4360, 55.3781],
+        "media": "https://drive.google.com/file/d/1fA8uX8NzTPTLVZAaNURlY05KUQUs2DGb/view?usp=drive_link"
+      }
+      "Taiwan": {
+        "coordinates": [121.5654, 25.0330],
+        "media": "https://drive.google.com/file/d/1v4dUfSkyMh1Lk31Fj_pUnnQfOcDujkAG/view?usp=drive_link"
+      }
+      "USA": {
+        "coordinates": [-98.5795, 39.8283],
+        "media": "https://drive.google.com/file/d/1MbOfM_zyDQ3tc6RcrPh8SrXb1RvUjY_B/view?usp=drive_link"
+      }
+      "Poland": {
+        "coordinates": [19.1451, 51.9194],
+        "media": "https://drive.google.com/file/d/1VryqnQ9rCd2tlXh3rKn5wqLVVvsNcrEf/view?usp=drive_link"
       }
     };
 
@@ -59,6 +80,10 @@
         window.location.href = data.media;
       });
     }
+
+    map.on('style.load', () => {
+      map.setFog({});
+    });
   </script>
 </body>
 </html>
