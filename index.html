@@ -19,35 +19,14 @@
       align-items: center;
       justify-content: center;
     }
-    /* Media container for video or audio */
-    #media-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1000;
-      background: rgba(0, 0, 0, 0.8);
-      padding: 10px;
-      border-radius: 8px;
-      display: none;
-    }
-    #media-container video,
-    #media-container audio {
-      max-width: 300px;
-      display: block;
-    }
   </style>
 </head>
 <body>
   <div id="map"></div>
 
-  <!-- Media container -->
-  <div id="media-container"></div>
-
   <script>
-    // Set up your Mapbox access token
     mapboxgl.accessToken = 'pk.eyJ1IjoieWlnaXRlZmVuYXMxIiwiYSI6ImNsemgwaXRmMjFqZGkybHBrZWtnMjJrbWMifQ.1pb_ksI0o0IaKeEKeBG49g';
 
-    // Initialize the Mapbox map
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
@@ -55,7 +34,6 @@
       zoom: 2
     });
 
-    // Country Data
     const countryData = {
       "Turkey": {
         "coordinates": [35, 39],
@@ -67,47 +45,18 @@
       }
     };
 
-    // Media container element
-    const mediaContainer = document.getElementById('media-container');
-
-    // Add markers and set click events
     for (const country in countryData) {
       const data = countryData[country];
 
-      // Create a custom marker element
       const el = document.createElement('div');
       el.className = 'custom-marker';
 
-      // Add a marker with the custom element
       const marker = new mapboxgl.Marker(el)
         .setLngLat(data.coordinates)
         .addTo(map);
 
-      // Handle click event to play media
       el.addEventListener('click', () => {
-        const mediaUrl = data.media;
-        const mediaType = mediaUrl.endsWith(".mp4") ? "video" : "audio";
-
-        // Clear any existing media
-        mediaContainer.innerHTML = '';
-        
-        // Set up media element based on file type
-        if (mediaType === "video") {
-          const video = document.createElement("video");
-          video.src = mediaUrl;
-          video.controls = true;
-          video.autoplay = true;
-          mediaContainer.appendChild(video);
-        } else {
-          const audio = document.createElement("audio");
-          audio.src = mediaUrl;
-          audio.controls = true;
-          audio.autoplay = true;
-          mediaContainer.appendChild(audio);
-        }
-
-        // Show the media container
-        mediaContainer.style.display = 'block';
+        window.location.href = data.media;
       });
     }
   </script>
