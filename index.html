@@ -25,48 +25,44 @@
       projection: 'globe'
     });
 
-    // Updated country data with precise Mapbox names and links
     const countryData = {
       "Turkey": {
-        "name": "Turkey",
+        "name_en": "Turkey",
         "media": "https://drive.google.com/file/d/1Q6OrKY-gOjeXyuBZxBk1TY0tGTTn8rOE/view?usp=drive_link"
       },
       "South Korea": {
-        "name": "South Korea",
+        "name_en": "South Korea",
         "media": "https://drive.google.com/file/d/1Q6OrKY-gOjeXyuBZxBk1TY0tGTTn8rOE/view?usp=drive_link"
       },
       "Kazakhstan": {
-        "name": "Kazakhstan",
+        "name_en": "Kazakhstan",
         "media": "https://drive.google.com/file/d/10t55LpuqM4N02CzyOc6KG8uRFCDQLVUG/view?usp=drive_link"
       },
       "UK": {
-        "name": "United Kingdom",
+        "name_en": "United Kingdom",
         "media": "https://drive.google.com/file/d/1fA8uX8NzTPTLVZAaNURlY05KUQUs2DGb/view?usp=drive_link"
       },
       "Taiwan": {
-        "name": "Taiwan",
+        "name_en": "Taiwan",
         "media": "https://drive.google.com/file/d/1v4dUfSkyMh1Lk31Fj_pUnnQfOcDujkAG/view?usp=drive_link"
       },
       "USA": {
-        "name": "United States",
+        "name_en": "United States",
         "media": "https://drive.google.com/file/d/1MbOfM_zyDQ3tc6RcrPh8SrXb1RvUjY_B/view?usp=drive_link"
       },
       "Poland": {
-        "name": "Poland",
+        "name_en": "Poland",
         "media": "https://drive.google.com/file/d/1VryqnQ9rCd2tlXh3rKn5wqLVVvsNcrEf/view?usp=drive_link"
       }
     };
 
     map.on('load', () => {
-      map.setFog({}); // Adds atmosphere around the globe
-
-      // Add the source for country boundaries
+      map.setFog({});
       map.addSource('countries', {
         type: 'vector',
         url: 'mapbox://mapbox.country-boundaries-v1'
       });
 
-      // Add a layer to color the selected countries in red
       map.addLayer({
         'id': 'country-highlight',
         'type': 'fill',
@@ -76,20 +72,18 @@
           'fill-color': '#ff5a5f',
           'fill-opacity': 0.6
         },
-        'filter': ['in', 'name_en', ...Object.values(countryData).map(country => country.name)]
+        'filter': ['in', 'name_en', ...Object.values(countryData).map(country => country.name_en)]
       });
 
-      // Event listener for country clicks
       map.on('click', 'country-highlight', (e) => {
-        const countryName = e.features[0].properties.name;
-        const country = Object.values(countryData).find(c => c.name === countryName);
+        const countryName = e.features[0].properties.name_en;
+        const country = Object.values(countryData).find(c => c.name_en === countryName);
 
         if (country) {
-          window.open(country.media, '_blank'); // Open link in a new tab
+          window.open(country.media, '_blank');
         }
       });
 
-      // Change cursor to pointer when hovering over a country
       map.on('mouseenter', 'country-highlight', () => {
         map.getCanvas().style.cursor = 'pointer';
       });
