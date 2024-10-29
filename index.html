@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapbox Interactive Map</title>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script>
+    // Set up your Mapbox access token
+    mapboxgl.accessToken = 'pk.eyJ1IjoieWlnaXRlZmVuYXMxIiwiYSI6ImNsemgwaXRmMjFqZGkybHBrZWtnMjJrbWMifQ.1pb_ksI0o0IaKeEKeBG49g';
+
+    // Initialize the Mapbox map
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [34.8516, 38.9637],
+      zoom: 2
+    });
+
+    // Country Data
+    const countryData = {
+      "Turkey": {
+        "coordinates": [35, 39],
+        "media": "https://drive.google.com/file/d/1Q6OrKY-gOjeXyuBZxBk1TY0tGTTn8rOE/view?usp=drive_link"
+      },
+      "South Korea": {
+        "coordinates": [127.7669, 35.9078],
+        "media": "https://drive.google.com/file/d/1GjmRSJumehYvkDi_lnA8HFPx9JaA10Ok/view?usp=drive_link"
+      }
+    };
+
+    // Add markers and set click events
+    for (const country in countryData) {
+      const data = countryData[country];
+
+      // Add a marker
+      const marker = new mapboxgl.Marker()
+        .setLngLat(data.coordinates)
+        .addTo(map);
+
+      // Handle click event to play media
+      marker.getElement().addEventListener('click', () => {
+        const mediaUrl = data.media;
+        const mediaType = mediaUrl.endsWith(".mp4") ? "video" : "audio";
+
+        if (mediaType === "video") {
+          const video = document.createElement("video");
+          video.src = mediaUrl;
+          video.controls = true;
+          video.autoplay = true;
+          document.body.appendChild(video);
+          video.addEventListener("ended", () => video.remove());
+        } else {
+          const audio = new Audio(mediaUrl);
+          audio.play();
+        }
+      });
+    }
+  </script>
+</body>
+</html>
